@@ -6,6 +6,11 @@ Build with the command ```mvn package```
 ## Run 
 Run with the command ```java -cp target/MMillwardSynalogik-1.jar synalogik.App <filename>``` where ```<filename>``` is to be replaced with the path to the file you want to test.
 
+E.g. 
+```
+java -cp target/MMillwardSynalogik-1.jar synalogik.App D:\Downloads\bible.txt\bible.txt
+```
+
 ## Assumptions
 - New lines do **not** indicate the end of a word. e.g.
 
