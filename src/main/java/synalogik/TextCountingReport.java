@@ -49,13 +49,13 @@ public class TextCountingReport {
     @Override
     public String toString() {
         var outputSb = new StringBuilder();
-        outputSb.append("Word Count = " + wordCount + "\n");
-        outputSb.append("Average word length = " + averageWordLength + "\n");
+        outputSb.append("Word count = " + wordCount + "\n");
+        outputSb.append("Average word length = " + Math.round(averageWordLength * 1000.0) / 1000.0 + "\n");
         for (Map.Entry<Integer, Integer> entry : wordLengthCountLookup.entrySet()) {
             outputSb.append("Number of words of length " + entry.getKey().toString() + " is " + entry.getValue().toString() + "\n");
         }
         outputSb.append("The most frequently occurring word length is " + mostFrequentWordLengthCount
-                + " for word lengths of "
+                + ", for word lengths of "
                 + mostFrequentWordLengths.stream().map(Object::toString).collect(Collectors.joining(" & ")));
         return outputSb.toString();
     }

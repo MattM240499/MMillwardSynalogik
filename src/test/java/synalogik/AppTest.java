@@ -19,7 +19,7 @@ class AppTest {
 
     @Test
     void textState_WithSpaceSeperatedString_CountsCorrectly() {
-        var report = runTextCount(new String[] { "a bb cc ddd eee fff" });
+        var report = runTextCountAndGetReport(new String[] { "a bb cc ddd eee fff" });
 
         var expectedMap = new TreeMap<Integer, Integer>();
         expectedMap.put(1, 1);
@@ -41,7 +41,7 @@ class AppTest {
 
     @Test
     void textState_WithNoWhiteSpaceSeperatedString_CountsAsASingleWord() {
-        var report = runTextCount(new String[] { "ABunchOfWordsNot SeperatedByWhiteSpace" });
+        var report = runTextCountAndGetReport(new String[] { "ABunchOfWordsNot SeperatedByWhiteSpace" });
 
         var expectedMap = new TreeMap<Integer, Integer>();
         expectedMap.put(16, 1);
@@ -64,7 +64,7 @@ class AppTest {
 
     @Test
     void textState_WithMultipleSpaces_AddsNoExtraWords() {
-        var report = runTextCount(new String[] { "A              LONG                    GAP" });
+        var report = runTextCountAndGetReport(new String[] { "A              LONG                    GAP" });
 
         var expectedMap = new TreeMap<Integer, Integer>();
         expectedMap.put(1, 1);
@@ -88,7 +88,7 @@ class AppTest {
 
     @Test
     void textState_WithMultipleStringsWithGapHandled_CountsAsASingleWord() {
-        var report = runTextCount(new String[] { "A Lovely ", "Sentence" });
+        var report = runTextCountAndGetReport(new String[] { "A Lovely ", "Sentence" });
 
         var expectedMap = new TreeMap<Integer, Integer>();
         expectedMap.put(1, 1);
@@ -113,7 +113,7 @@ class AppTest {
 
     @Test
     void textState_WithMultipleStringsWithNoGapHandled_CountsAsASingleWord() {
-        var report = runTextCount(new String[] { "A Lovely", "Sentence" });
+        var report = runTextCountAndGetReport(new String[] { "A Lovely", "Sentence" });
 
         var expectedMap = new TreeMap<Integer, Integer>();
         expectedMap.put(1, 1);
@@ -136,7 +136,7 @@ class AppTest {
 
     @Test
     void textState_WithStringWithPunctuation_CountsWordsCorrectly() {
-        var report = runTextCount(new String[] { "A, Somewhat( Large) Set? Of. Punctuation: Which; Should\" be\' ignored!" });
+        var report = runTextCountAndGetReport(new String[] { "A, Large) Set? Of. Punctuation: Which; Should\" be( ignored!" });
 
         var expectedMap = new TreeMap<Integer, Integer>();
         expectedMap.put(1, 1);
@@ -145,10 +145,9 @@ class AppTest {
         expectedMap.put(5, 2);
         expectedMap.put(6, 1);
         expectedMap.put(7, 1);
-        expectedMap.put(8, 1);
         expectedMap.put(11, 1);
-        var expectedWordCount = 10;
-        var expectedLetterCount = 50;
+        var expectedWordCount = 9;
+        var expectedLetterCount = 42;
         var expectedAvgWordLen = (double) expectedLetterCount / expectedWordCount;
         var mostFrequentWordLengthCount = 2;
         var expectedMostFreqWordLengths = new ArrayList<Integer>();
@@ -165,7 +164,7 @@ class AppTest {
 
     @Test
     void textState_WithStringWithPunctuationWithNoGaps_CountsWordsCorrectly() {
-        var report = runTextCount(new String[] { "A,Somewhat(Large)Set?Of.Punctuation:Which;Should\"be\'ignored!" });
+        var report = runTextCountAndGetReport(new String[] { "A,Large)Set?Of.Punctuation:Which;Should\"be(ignored!" });
 
         var expectedMap = new TreeMap<Integer, Integer>();
         expectedMap.put(1, 1);
@@ -174,10 +173,9 @@ class AppTest {
         expectedMap.put(5, 2);
         expectedMap.put(6, 1);
         expectedMap.put(7, 1);
-        expectedMap.put(8, 1);
         expectedMap.put(11, 1);
-        var expectedWordCount = 10;
-        var expectedLetterCount = 50;
+        var expectedWordCount = 9;
+        var expectedLetterCount = 42;
         var expectedAvgWordLen = (double) expectedLetterCount / expectedWordCount;
         var mostFrequentWordLengthCount = 2;
         var expectedMostFreqWordLengths = new ArrayList<Integer>();
@@ -191,10 +189,44 @@ class AppTest {
         assertEquals(expectedWordCount, report.getWordCount());
     }
 
+    @Test
+    void reportToString_ProducesCorrectReport_AfterTextCounting() {
+        var report = runTextCountAndGetReport(new String[]{"Hello world & good morning. The date is 18/05/2016"});
+
+        var expectedReport = 
+        "Word count = 9\n" +
+        "Average word length = 4.556\n" + 
+        "Number of words of length 1 is 1\n" +
+        "Number of words of length 2 is 1\n" +
+        "Number of words of length 3 is 1\n" +
+        "Number of words of length 4 is 2\n" +
+        "Number of words of length 5 is 2\n" +
+        "Number of words of length 7 is 1\n"+
+        "Number of words of length 10 is 1\n" +
+        "The most frequently occurring word length is 2, for word lengths of 4 & 5";
+
+        assertEquals(expectedReport, report.toString());
+    }
+
+    @Test
+    void reportToString_ProducesCorrectReport2_AfterTextCounting() {
+        var report = runTextCountAndGetReport(new String[]{"Let's count... 1,2,3,4,5,6,7,8,9,10!"});
+
+        var expectedReport = 
+        "Word count = 12\n" +
+        "Average word length = 1.75\n" + 
+        "Number of words of length 1 is 9\n" +
+        "Number of words of length 2 is 1\n" +
+        "Number of words of length 5 is 2\n" +
+        "The most frequently occurring word length is 9, for word lengths of 1";
+
+        assertEquals(expectedReport, report.toString());
+    }
+
     /**
-     * Runs the standard text counting procedure
+     * Runs the standard text counting procedure, and returns the report
      */
-    private TextCountingReport runTextCount(String[] textLines) {
+    private TextCountingReport runTextCountAndGetReport(String[] textLines) {
         var textState = new ReadTextState();
         for (String line : textLines) {
             textState.handleTextLine(line);

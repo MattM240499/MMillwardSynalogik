@@ -8,7 +8,7 @@ import java.util.TreeMap;
  * Holds statistics regarding a given piece of text that has been read consecutively.
  */
 public class ReadTextState {
-    private static char[] punctuation = { '.', ',', ';', ':', '?', '!', '"', '\'', ')', '(' };
+    private static char[] punctuation = { '.', ',', ';', ':', '?', '!', '"', ')', '(' };
 
     private int lettersRead = 0;
     private int wordsRead = 0;
