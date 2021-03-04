@@ -28,6 +28,6 @@ will be counted as a single word
 
  - **MyLovelyWord** = 1 twelve letter word
  - **Don't** = 1 five letter word
- - **A,Comma,Seperated,List** = 1 of each of 1,4,5,9 letters
- - **My words** = 1 of each of 1,5 letters
+ - **A,Comma,Seperated,List** = 1 of each of 1,4,5,9 letter words
+ - **My words** = 1 of each of 1,5 letter words
  - **Line\nBreak** = 1 nine letter word
